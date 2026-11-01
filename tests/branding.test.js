@@ -30,7 +30,7 @@ test('Primary red and blue maintain readable contrast on white', () => {
 })
 
 test('Homepage stays short and directs visitors to dedicated pages', () => {
-  assert.equal((html.match(/<section\\b/g) || []).length, 4)
+  assert.equal((html.match(/<section\b/g) || []).length, 4)
   assert.match(html, /Growing in faith/)
   assert.match(html, /Faith & Fellowship/)
   assert.match(html, /Skills & Empowerment/)
