@@ -29,27 +29,58 @@ test('Primary red and blue maintain readable contrast on white', () => {
   }
 })
 
-test('Homepage presents only essential information with clear navigation', () => {
-  const app = readFileSync(new URL('../app.js', import.meta.url), 'utf8')
-  assert.equal((html.match(/<section\b/g) || []).length, 5)
-  for (const id of ['about', 'work', 'gatherings', 'involved', 'contact', 'ideal', 'questions']) {
-    assert.ok(html.includes('id="' + id + '"'), 'Missing section or detail: ' + id)
-  }
-  const primaryNav = html.match(/<nav id="navigation"[^>]*>[\s\S]*?<\/nav>/)?.[0]
-  assert.ok(primaryNav, 'Missing primary navigation')
-  for (const id of ['about', 'work', 'gatherings', 'contact']) {
-    assert.ok(primaryNav.includes('href="#' + id + '"'), 'Missing navigation: ' + id)
-  }
-  for (const key of ['fellowship', 'skills', 'outreach']) {
-    assert.match(html, new RegExp('data-programme="' + key + '"'))
-  }
-  for (const action of ['volunteer', 'partner', 'donate', 'training', 'support', 'privacy']) {
-    assert.match(html, new RegExp('data-open="' + action + '"'))
-  }
-  assert.match(html, /id="ideal" class="training-details"/)
-  assert.match(html, /id="questions" class="compact-faq"/)
-  assert.match(html, /id="action-dialog"/)
-  assert.match(html, /Website design preview · Content pending ministry approval/)
+test('Homepage stays short and directs visitors to dedicated pages', () => {
+  assert.equal((html.match(/<section\\b/g) || []).length, 4)
+  assert.match(html, /Growing in faith/)
+  assert.match(html, /Faith & Fellowship/)
+  assert.match(html, /Skills & Empowerment/)
+  assert.match(html, /Care & Outreach/)
+  assert.match(html, /href="\/programmes\/#empowerment"/)
+  assert.match(html, /href="\/contact\/#involved"/)
   assert.doesNotMatch(html, /class="(?:pillars|pathways|ideal-art|gathering-card)"/)
-  assert.match(app, /programme.href === '#ideal'/)
+})
+
+test('All five pages have accessible navigation and shared action dialogs', () => {
+  const pages = {
+    '/': html,
+    '/about/': readFileSync(new URL('../about/index.html', import.meta.url), 'utf8'),
+    '/programmes/': readFileSync(new URL('../programmes/index.html', import.meta.url), 'utf8'),
+    '/events/': readFileSync(new URL('../events/index.html', import.meta.url), 'utf8'),
+    '/contact/': readFileSync(new URL('../contact/index.html', import.meta.url), 'utf8'),
+  }
+  for (const [path, page] of Object.entries(pages)) {
+    assert.match(page, /<main id="main">/, 'Missing main content: ' + path)
+    assert.match(page, /class="skip" href="#main"/, 'Missing skip link: ' + path)
+    assert.match(page, /id="navigation"/, 'Missing navigation: ' + path)
+    assert.match(page, /id="action-dialog"/, 'Missing action dialog: ' + path)
+    assert.match(page, /src="\/app\.js"/, 'Missing JS: ' + path)
+    assert.match(page, /href="\/styles\.css"/, 'Missing stylesheet: ' + path)
+    assert.match(page, /data-open="donate"/, 'Missing donation action: ' + path)
+    assert.match(page, /data-open="privacy"/, 'Missing privacy action: ' + path)
+    assert.match(page, /Content pending ministry approval/, 'Missing prelaunch notice: ' + path)
+    for (const url of Object.keys(pages)) {
+      assert.ok(page.includes('href="' + url + '"'), path + ' missing nav link ' + url)
+    }
+    assert.equal((page.match(/aria-current="page"/g) || []).length, 1, 'Active navigation state: ' + path)
+  }
+  assert.match(pages['/programmes/'], /id="ideal"/)
+  assert.match(pages['/programmes/'], /data-skill="Soap making"/)
+  assert.match(pages['/contact/'], /data-open="volunteer"/)
+  assert.match(pages['/contact/'], /data-open="training"/)
+  assert.match(pages['/contact/'], /data-open="partner"/)
+  assert.match(pages['/contact/'], /data-open="support"/)
+  assert.match(pages['/events/'], /Dates to be announced/)
+  assert.doesNotMatch(pages['/events/'], /[0-9]{1,2} November 2026/)
+})
+
+test('Build copies each page and form config is fetched only when needed', () => {
+  const build = readFileSync(new URL('../scripts/build.mjs', import.meta.url), 'utf8')
+  const app = readFileSync(new URL('../app.js', import.meta.url), 'utf8')
+  for (const page of ['about', 'programmes', 'events', 'contact']) {
+    assert.ok(build.includes("'"+page+"'"), 'Build missing ' + page)
+  }
+  assert.match(build, /dist\/.*index\.html/)
+  assert.match(app, /const settings = await getConfig\(\)/)
+  assert.match(app, /action: 'See gatherings', href: '\/events\/'/)
+  assert.match(app, /action: 'Explore ways to get involved', href: '\/contact\/#involved'/)
 })
