@@ -18,7 +18,10 @@ document.querySelector('.dialog-close').addEventListener('click', () => dialog.c
 dialog.addEventListener('click', event => { if (event.target === dialog) { const bounds = dialog.getBoundingClientRect(); if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close() } })
 let actionVersion = 0
 dialog.addEventListener('close', () => { actionVersion += 1 })
-const config = fetch('/api/site-config', { signal: AbortSignal.timeout(5000) }).then(response => response.ok ? response.json() : {}).catch(() => ({}))
+let configPromise
+function getConfig() {
+  return configPromise ??= fetch('/api/site-config', { signal: AbortSignal.timeout(5000) }).then(response => response.ok ? response.json() : {}).catch(() => ({}))
+}
 const details = {
   volunteer: ['Become a volunteer', 'Share your interests, skills and availability with the ministry.'],
   support: ['Request support', 'Tell the ministry what kind of support you are seeking. Please do not include sensitive medical or financial documents.'],
@@ -40,13 +43,13 @@ async function openAction(kind, prefill = '') {
   description.textContent = details[kind][1]
   body.textContent = 'Loading…'
   if (!dialog.open) dialog.showModal()
-  const settings = await config
-  if (version !== actionVersion || !dialog.open) return
   if (kind === 'privacy') {
     body.innerHTML = '<div class="notice">Forms are available only after the ministry’s connection is enabled. Connected applications are sent to GHACOE’s Sedifex workspace for review and follow-up. Contact details, enquiry details and your consent are included. Donations continue to Paystack for payment; this website does not collect card details. Do not send emergency requests or sensitive documents through these forms. To ask about access, correction or deletion, contact the ministry through its published contact channel.</div>'
     return
   }
   if (kind === 'partner') return unavailable('Partnership enquiries are currently handled directly by the ministry.')
+  const settings = await getConfig()
+  if (version !== actionVersion || !dialog.open) return
   const endpoint = kind === 'donate' ? 'donations' : kind === 'volunteer' ? 'volunteer' : 'support'
   const connected = Boolean(settings[endpoint])
   body.innerHTML = '<form class="form"><fieldset><label>Full name<input name="name" maxlength="140" autocomplete="name" required></label><label>Email<input name="email" type="email" maxlength="180" autocomplete="email" ' + (kind === 'donate' ? 'required' : '') + '></label><label>Phone<input name="phone" type="tel" maxlength="25" autocomplete="tel"></label>' +
@@ -149,7 +152,7 @@ const programmeDetails = {
     intro: 'Space to grow in faith and walk alongside one another.',
     copy: 'Spiritual growth is at the heart of the ministry. Christian fellowship, conferences and sharing forums give women opportunities to worship, learn and connect.',
     points: ['Spiritual growth and Christian fellowship', 'Conferences and sharing forums', 'A shared commitment to service'],
-    action: 'See gatherings', href: '#gatherings',
+    action: 'See gatherings', href: '/events/',
   },
   skills: {
     title: 'Skills for Independence',
@@ -163,7 +166,7 @@ const programmeDetails = {
     intro: 'A wider circle of support.',
     copy: 'The ministry’s outreach supports the holistic development of women, young people and vulnerable groups. Its work includes community engagement, partnerships and social advocacy.',
     points: ['Women, young people and vulnerable communities', 'Support through outreach and partnerships', 'Community and social awareness'],
-    action: 'Explore ways to get involved', href: '#involved',
+    action: 'Explore ways to get involved', href: '/contact/#involved',
   },
 }
 document.querySelectorAll('[data-programme]').forEach(button => button.addEventListener('click', () => {
@@ -188,7 +191,7 @@ document.querySelectorAll('[data-programme]').forEach(button => button.addEventL
   action.textContent = programme.action + ' →'
   action.addEventListener('click', () => {
     // Open the compact list before navigating to it from programme details.
-    if (programme.href === '#ideal') document.querySelector('#ideal').open = true
+    if (programme.href === '#ideal') document.querySelector('#ideal')?.setAttribute('open', '')
     dialog.close()
   })
   body.append(copy, list, action)
