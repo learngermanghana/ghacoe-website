@@ -186,7 +186,11 @@ document.querySelectorAll('[data-programme]').forEach(button => button.addEventL
   action.className = 'button'
   action.href = programme.href
   action.textContent = programme.action + ' →'
-  action.addEventListener('click', () => dialog.close())
+  action.addEventListener('click', () => {
+    // Open the compact list before navigating to it from programme details.
+    if (programme.href === '#ideal') document.querySelector('#ideal').open = true
+    dialog.close()
+  })
   body.append(copy, list, action)
   if (!dialog.open) dialog.showModal()
 }))

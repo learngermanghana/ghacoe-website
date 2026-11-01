@@ -10,7 +10,7 @@ test('GHACOE palette uses proposed red, blue and white colours', () => {
     assert.ok(css.includes(token), `Missing brand token: ${token}`)
   }
   assert.match(css, /\.button\{[^}]*background:var\(--red\)/)
-  assert.match(css, /\.pillars\{[^}]*background:var\(--blue\)/)
+  assert.match(css, /\.next-steps\{[^}]*background:var\(--pale-blue\)/)
   assert.match(css, /\.hero h1 em\{[^}]*color:var\(--red\)/)
   assert.match(html, /<meta name="theme-color" content="#163e75">/)
   assert.match(html, /class="accent-line"/)
@@ -27,4 +27,29 @@ test('Primary red and blue maintain readable contrast on white', () => {
     const contrast = (white + 0.05) / (luminance(dark) + 0.05)
     assert.ok(contrast >= 4.5, `Contrast ${contrast.toFixed(2)} below WCAG AA text threshold for ${dark}`)
   }
+})
+
+test('Homepage presents only essential information with clear navigation', () => {
+  const app = readFileSync(new URL('../app.js', import.meta.url), 'utf8')
+  assert.equal((html.match(/<section\b/g) || []).length, 5)
+  for (const id of ['about', 'work', 'gatherings', 'involved', 'contact', 'ideal', 'questions']) {
+    assert.ok(html.includes('id="' + id + '"'), 'Missing section or detail: ' + id)
+  }
+  const primaryNav = html.match(/<nav id="navigation"[^>]*>[\s\S]*?<\/nav>/)?.[0]
+  assert.ok(primaryNav, 'Missing primary navigation')
+  for (const id of ['about', 'work', 'gatherings', 'contact']) {
+    assert.ok(primaryNav.includes('href="#' + id + '"'), 'Missing navigation: ' + id)
+  }
+  for (const key of ['fellowship', 'skills', 'outreach']) {
+    assert.match(html, new RegExp('data-programme="' + key + '"'))
+  }
+  for (const action of ['volunteer', 'partner', 'donate', 'training', 'support', 'privacy']) {
+    assert.match(html, new RegExp('data-open="' + action + '"'))
+  }
+  assert.match(html, /id="ideal" class="training-details"/)
+  assert.match(html, /id="questions" class="compact-faq"/)
+  assert.match(html, /id="action-dialog"/)
+  assert.match(html, /Website design preview · Content pending ministry approval/)
+  assert.doesNotMatch(html, /class="(?:pillars|pathways|ideal-art|gathering-card)"/)
+  assert.match(app, /programme.href === '#ideal'/)
 })
