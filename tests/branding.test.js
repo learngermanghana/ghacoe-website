@@ -31,11 +31,11 @@ test('Primary red and blue maintain readable contrast on white', () => {
 
 test('Homepage presents only essential information with clear navigation', () => {
   const app = readFileSync(new URL('../app.js', import.meta.url), 'utf8')
-  assert.equal((html.match(/<section\\b/g) || []).length, 5)
+  assert.equal((html.match(/<section\b/g) || []).length, 5)
   for (const id of ['about', 'work', 'gatherings', 'involved', 'contact', 'ideal', 'questions']) {
     assert.ok(html.includes('id="' + id + '"'), 'Missing section or detail: ' + id)
   }
-  const primaryNav = html.match(/<nav id="navigation"[^>]*>[\\s\\S]*?<\\/nav>/)?.[0]
+  const primaryNav = html.match(/<nav id="navigation"[^>]*>[\s\S]*?<\/nav>/)?.[0]
   assert.ok(primaryNav, 'Missing primary navigation')
   for (const id of ['about', 'work', 'gatherings', 'contact']) {
     assert.ok(primaryNav.includes('href="#' + id + '"'), 'Missing navigation: ' + id)
