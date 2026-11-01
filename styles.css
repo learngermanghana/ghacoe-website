@@ -33,3 +33,84 @@
 @media(max-width:1000px){.header{gap:18px}.header nav{gap:12px;font-size:12px}.header .small{padding:12px 15px}.questions{gap:45px}.pathway-grid{gap:25px}}
 @media(max-width:850px){.header{position:relative}.header .brand strong{font-size:33px}.header nav{gap:10px;font-size:11px}}
 @media(max-width:760px){.header{position:sticky}.header nav{font-size:14px;max-height:65dvh;overflow:auto}.pathway-grid,.questions{grid-template-columns:1fr;gap:35px}.pathway-grid h3{font-size:34px}.questions h2{font-size:42px}.faq-list summary{min-height:28px}.footer-bottom a{font-size:12px}.hero-image{min-height:350px}}
+
+/* Compact homepage: core information and actions first */
+.header{padding:14px 5%;gap:18px}
+.header .brand strong{font-size:33px}
+.hero{min-height:410px;grid-template-columns:1.15fr .85fr}
+.hero-copy{padding:44px 8%}
+.hero .eyebrow{margin-bottom:12px}
+.hero h1{font-size:clamp(42px,4.3vw,68px);letter-spacing:-1.2px}
+.hero .intro{margin-top:17px;font-size:16px;line-height:1.6}
+.hero .actions{margin-top:23px}
+.hero-note{margin-top:20px}
+.hero-image figcaption{bottom:20px;left:22px;right:20px}
+.hero-image figcaption span{font-size:27px}
+.about-strip{display:flex;align-items:center;gap:36px;padding:25px 6%;border-bottom:1px solid var(--line);background:var(--offwhite)}
+.about-strip h2{font-size:28px;flex:0 0 180px}
+.about-strip p{font-size:14px;max-width:850px;color:var(--muted);line-height:1.6}
+.work.section{padding:55px 6% 60px}
+.work .section-heading{margin-bottom:24px}
+.work .section-heading h2{font-size:43px}
+.programme-grid{gap:17px}
+.programme-grid article{padding:23px;border:1px solid var(--line);background:var(--white)}
+.programme-symbol{width:52px;height:52px;display:grid;place-items:center;border-radius:10px;font-size:28px;line-height:1}
+.programme-grid h3{font-size:27px;margin-top:17px}
+.programme-grid article>p:not(.number){margin-top:9px;line-height:1.55}
+.programme-grid article .text-link{margin-top:13px}
+.training-details{margin-top:18px;padding:15px 2px 0;border-top:1px solid var(--line)}
+.training-details summary,.compact-faq summary{font-size:14px;font-weight:600;color:var(--blue);cursor:pointer;min-height:38px}
+.training-details summary:hover,.compact-faq summary:hover{text-decoration:underline;text-underline-offset:4px}
+.training-details .skill-tags{margin:13px 0 7px}
+.next-steps{background:var(--pale-blue);padding:44px 6%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px}
+.next-step{scroll-margin-top:90px}
+.next-step+.next-step{padding-left:36px;border-left:1px solid var(--line)}
+.next-step .eyebrow{margin-bottom:10px}
+.next-step h2{font-size:36px}
+.next-step>p:not(.eyebrow){font-size:14px;max-width:470px;color:var(--muted);margin-top:14px;line-height:1.6}
+.next-step .actions{margin-top:19px;gap:9px}
+.next-step .text-link{margin-top:14px}
+.contact.section{display:block;padding-top:42px;padding-bottom:36px}
+.contact-main{display:flex;align-items:center;justify-content:space-between;gap:25px}
+.contact-main .eyebrow{margin-bottom:9px}
+.contact-main h2{font-size:36px}
+.contact-main p:last-child{margin-top:11px;font-size:14px}
+.compact-faq{border-top:1px solid var(--line);margin-top:26px;padding-top:12px}
+.faq-pairs{max-width:900px;padding:7px 0 13px}
+.faq-pairs p{font-size:14px;color:var(--muted);margin:9px 0;line-height:1.6}
+.faq-pairs strong{color:var(--blue)}
+.faq-pairs .text-link{margin-top:9px}
+footer{padding-top:28px}
+.footer-bottom{margin-top:24px}
+@media(max-width:760px){
+  .header{padding:12px 6%;gap:10px}
+  .header .brand strong{font-size:30px}
+  .hero{min-height:0;grid-template-columns:1fr}
+  .hero-copy{padding:38px 6% 34px}
+  .hero h1{font-size:clamp(42px,8.5vw,57px)}
+  .hero .intro{font-size:15px;max-width:570px}
+  .hero .actions{margin-top:19px}
+  .hero-note{margin-top:17px}
+  .hero-image{display:none}
+  .about-strip{display:block;padding:23px 6%}
+  .about-strip h2{font-size:25px;margin-bottom:7px}
+  .about-strip p{font-size:13px}
+  .work.section{padding:36px 6% 43px}
+  .work .section-heading{margin-bottom:20px;gap:5px}
+  .work .section-heading h2{font-size:36px}
+  .work .section-heading>p{font-size:13px}
+  .programme-grid{grid-template-columns:1fr;gap:12px}
+  .programme-grid article{padding:19px}
+  .programme-grid h3{font-size:26px;margin-top:12px}
+  .programme-grid article .text-link{margin-top:7px}
+  .next-steps{grid-template-columns:1fr;padding:31px 6%;gap:22px}
+  .next-step+.next-step{border-left:0;border-top:1px solid var(--line);padding:24px 0 0}
+  .next-step h2{font-size:33px}
+  .contact.section{padding:35px 6% 27px}
+  .contact-main{flex-direction:column;align-items:flex-start;gap:18px}
+  .contact-main h2{font-size:34px}
+  .compact-faq{margin-top:24px}
+  .footer-top{gap:16px}
+  .footer-bottom{margin-top:19px}
+}
+@media(max-width:380px){.hero h1{font-size:40px}.hero .actions .button{width:100%}}
