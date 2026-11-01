@@ -114,3 +114,67 @@ footer{padding-top:28px}
   .footer-bottom{margin-top:19px}
 }
 @media(max-width:380px){.hero h1{font-size:40px}.hero .actions .button{width:100%}}
+
+/* Five-page ministry website — shared internal-page layout */
+.header nav>a[aria-current="page"]{color:var(--blue);text-decoration:underline;text-underline-offset:8px;text-decoration-color:var(--red);font-weight:700}
+.inline-link{color:var(--blue);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.page-hero{padding:70px max(6%,calc((100vw - 1350px)/2)) 64px;background:var(--pale-blue);border-bottom:1px solid var(--line)}
+.page-hero h1{font-size:clamp(46px,5vw,76px);max-width:880px}
+.page-hero h1 em{font-style:normal;color:var(--red)}
+.page-hero>p:last-child{max-width:680px;margin-top:20px;font-size:17px;line-height:1.65;color:var(--muted)}
+.page-hero .eyebrow{margin-bottom:14px}
+.content-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:60px}
+.content-grid h2{font-size:clamp(36px,4vw,56px)}
+.prose{max-width:720px;font-size:16px;line-height:1.8;color:var(--muted)}
+.prose p+p{margin-top:14px}
+.prose .text-link{margin-top:18px}
+.values-section{background:var(--offwhite);max-width:none}
+.values-section h2{font-size:clamp(32px,3vw,46px);margin-bottom:30px}
+.mini-grid,.involvement-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.mini-grid article,.involvement-grid article{border:1px solid var(--line);padding:25px;background:white}
+.mini-grid h3,.involvement-grid h3{font-size:27px}
+.mini-grid p,.involvement-grid p{font-size:14px;color:var(--muted);margin-top:14px;line-height:1.7}
+.simple-banner{display:flex;align-items:center;justify-content:space-between;gap:28px;background:var(--pale-blue);max-width:none}
+.simple-banner h2{font-size:clamp(31px,3vw,46px)}
+.simple-banner p{margin-top:12px;font-size:15px;color:var(--muted);max-width:670px}
+.simple-banner .button{flex-shrink:0}
+.programme-detail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:60px;border-bottom:1px solid var(--line);scroll-margin-top:96px}
+.programme-detail:nth-of-type(odd){background:var(--offwhite);max-width:none}
+.programme-detail .programme-detail-heading h2{margin-top:14px;font-size:clamp(35px,3.4vw,53px)}
+.programme-detail .programme-detail-heading .eyebrow{margin:16px 0 6px}
+.programme-detail .training-details{margin-top:17px}
+.event-panel{display:flex;align-items:center;justify-content:space-between;gap:36px}
+.event-panel h2{font-size:clamp(35px,3.5vw,52px)}
+.event-panel p:not(.eyebrow){font-size:16px;color:var(--muted);margin-top:18px;max-width:720px}
+.event-panel .button{flex-shrink:0}
+.involvement-section h2{font-size:clamp(35px,3.4vw,52px);margin-bottom:28px}
+.involvement-grid article{display:flex;flex-direction:column;align-items:flex-start}
+.involvement-grid h3{margin-top:18px}
+.involvement-grid .text-link{margin-top:auto;padding-top:20px}
+.contact-section,.support-section{display:flex;align-items:center;justify-content:space-between;gap:30px;scroll-margin-top:90px}
+.contact-section{background:var(--pale-blue);max-width:none}
+.contact-section h2,.support-section h2{font-size:clamp(35px,3.5vw,50px)}
+.contact-section p:not(.eyebrow),.support-section p:not(.eyebrow){font-size:15px;color:var(--muted);margin-top:17px;max-width:700px}
+.contact-section .button,.support-section .button{flex-shrink:0}
+.compact-questions.section{padding-top:26px;padding-bottom:26px}
+.compact-questions .compact-faq{margin-top:0}
+@media(max-width:1000px){
+ .content-grid,.programme-detail{gap:35px}
+ .mini-grid,.involvement-grid{gap:13px}
+ .mini-grid article,.involvement-grid article{padding:20px}
+}
+@media(max-width:760px){
+ .page-hero{padding:45px 6% 42px}
+ .page-hero h1{font-size:clamp(43px,9vw,60px)}
+ .page-hero>p:last-child{font-size:15px;margin-top:16px}
+ .content-grid,.programme-detail{grid-template-columns:1fr;gap:22px}
+ .section.content-grid,.programme-detail.section,.values-section.section,.involvement-section.section{padding-top:43px;padding-bottom:45px}
+ .prose{font-size:15px}
+ .mini-grid,.involvement-grid{grid-template-columns:1fr;gap:13px}
+ .mini-grid h3,.involvement-grid h3{font-size:26px}
+ .simple-banner,.event-panel,.contact-section,.support-section{flex-direction:column;align-items:flex-start;gap:22px}
+ .simple-banner .button,.event-panel .button,.contact-section .button,.support-section .button{width:100%}
+ .programme-detail .programme-detail-heading h2{font-size:40px}
+ .event-panel.section,.contact-section.section,.support-section.section{padding-top:45px;padding-bottom:45px}
+ .involvement-grid .text-link{margin-top:9px}
+}
